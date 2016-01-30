@@ -51,6 +51,11 @@ coverage.xml
 
 # Django stuff:
 *.log
+manage.py
+db.sqlite3
+
+# Cheermin Webapp
+cheermin_webapp/
 
 # Sphinx documentation
 docs/_build/
@@ -60,3 +65,10 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Editors stuff:
+*.sublime-project
+*.sublime-workspace
+
+# Private stuff:
+shell.cmd
