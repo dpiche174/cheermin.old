@@ -11,7 +11,6 @@ from django.apps import AppConfig
 # ---------------
 #
 __author__ = 'Dave Piché'
-__version__ = '0.1'
 
 # -----------------------------------------------------------------------------
 # CheerminAdminConfig

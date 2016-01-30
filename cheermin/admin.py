@@ -6,26 +6,20 @@
 # - Other libraries and frameworks
 from django.contrib import admin
 
-# - Local Applicaiton
-from .models import Attendance, EmailAddress, Team, Athlete, Practice
+# - Local application
+from .models import Attendance, Team, Athlete, Practice
 
 # -----------------------------------------------------------------------------
 # Module Metadata
 # ---------------
 #
 __author__ = 'Dave Piché'
-__version__ = '0.1'
-
-class EmailAddressInline(admin.TabularInline):
-    """Table linking email addresses to athlete."""
-
-    model = EmailAddress
 
 @admin.register(Athlete)
 class AthleteAdmin(admin.ModelAdmin):
     """Representation of an athlete in the Django admin interface."""
 
-    inlines = [EmailAddressInline]
+    pass
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
