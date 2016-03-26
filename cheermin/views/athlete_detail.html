@@ -1,0 +1,94 @@
+{% extends "views/base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <h3>{% trans "Athlete Personal Information" %}</h3>
+      </div>
+      <div class="col-sm-4">
+        <h3>
+          <form method="post" action="print/">
+            {% csrf_token %}
+            <button class="btn btn-default" type="submit">{% trans "Get PDF" %}</button>
+          </form>
+        </h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4 col-sm-push-8">
+        {% if athlete.photo %}
+          <img src="{{ athlete.photo.url }}" alt="{{ athlete.first_name }} {{ athlete.last_name }}" height="265" width="206">
+        {% else %}
+          <img src="{% static "images/no-profile-image.png" %}" alt="{{ athlete.first_name }} {{ athlete.last_name }}" height="265" width="206">
+        {% endif %}
+      </div>
+      <div class="col-sm-8 col-sm-pull-4">
+        <div class="row">
+          <div class="col-sm-4"><strong>{% trans "Name" %}:</strong></div>
+          <div class="col-sm-8">{{ athlete }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><strong>{% trans "Address" %}:</strong></div>
+          <div class="col-sm-8">
+            {{ athlete.street }}<br>
+            {{ athlete.city }}, {{ athlete.province }}<br>
+            {{ athlete.country }}<br>
+            {{ athlete.postal_code }}
+<!-- <address>
+  <strong>Twitter, Inc.</strong><br>
+  1355 Market Street, Suite 900<br>
+  San Francisco, CA 94103<br>
+  <abbr title="Phone">P:</abbr> (123) 456-7890
+</address>
+
+<address>
+  <strong>Full Name</strong><br>
+  <a href="mailto:#">first.last@example.com</a>
+</address> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><strong>{% trans "Age on September 1st" %}:</strong></div>
+          <div class="col-sm-8">{{ athlete.birthday }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><strong>{% trans "Phone number" %}:</strong></div>
+          <div class="col-sm-8">{{ athlete.phone_number }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><strong>{% trans "Email address" %}:</strong></div>
+          <div class="col-sm-8">{{ athlete.email }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <h3>Fiche de santé</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="row">
+          <div class="col-sm-4"><strong>Numéro d'assurance maladie:</strong></div>
+          <div class="col-sm-8">{{ athlete.health_insurance_number }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><strong>Date d'expiration:</strong></div>
+          <div class="col-sm-8">{{ athlete.health_insurance_expiration_date }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><strong>Problèmes de santé:</strong></div>
+          <div class="col-sm-8">{{ athlete.health_problems }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"><strong>Allergies:</strong></div>
+          <div class="col-sm-8">{{ athlete.allergies }}</div>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+  </div>
+{% endblock %}
