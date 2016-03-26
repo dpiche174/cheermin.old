@@ -53,9 +53,14 @@ coverage.xml
 *.log
 manage.py
 db.sqlite3
+cheermin/migrations/
+cheermin/views/bower_components/
 
-# Cheermin Webapp
-cheermin_webapp/
+# Cheermin media
+media/
+
+# Windows thumbnails DB
+Thumbs.db
 
 # Sphinx documentation
 docs/_build/
