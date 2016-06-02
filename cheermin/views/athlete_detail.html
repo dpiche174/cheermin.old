@@ -74,7 +74,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-4 col-sm-push-8">
+        {% if athlete.health_insurance_card_photo %}
+          <img src="{{ athlete.health_insurance_card_photo.url }}" alt="{{ athlete.first_name }} {{ athlete.last_name }}" height="154" width="244">
+        {% endif %}
+      </div>
+      <div class="col-sm-8 col-sm-pull-4">
         <div class="row">
           <div class="col-sm-4"><strong>Numéro d'assurance maladie:</strong></div>
           <div class="col-sm-8">{{ athlete.health_insurance_number }}</div>
