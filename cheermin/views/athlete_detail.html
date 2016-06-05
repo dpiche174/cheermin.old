@@ -10,10 +10,15 @@
       </div>
       <div class="col-sm-4">
         <h3>
+          <!--
+          Disabling Download PDF button. The feature is not working well.
+          Workaround: use print to PDF feature of your browser.
+
           <form method="post" action="print/">
             {% csrf_token %}
             <button class="btn btn-default" type="submit">{% trans "Get PDF" %}</button>
           </form>
+          -->
         </h3>
       </div>
     </div>
@@ -74,9 +79,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-4 col-sm-push-8">
+      <div id="id_cards" class="col-sm-4 col-sm-push-8">
         {% if athlete.health_insurance_card_photo %}
           <img src="{{ athlete.health_insurance_card_photo.url }}" alt="{{ athlete.first_name }} {{ athlete.last_name }}" height="154" width="244">
+        {% endif %}
+        {% if athlete.secondary_id_card %}
+          <img src="{{ athlete.secondary_id_card.url }}" alt="{{ athlete.first_name }} {{ athlete.last_name }}" height="154" width="244">
         {% endif %}
       </div>
       <div class="col-sm-8 col-sm-pull-4">

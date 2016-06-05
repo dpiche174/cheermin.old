@@ -65,6 +65,7 @@ class AthleteAdmin(admin.ModelAdmin):
                 'health_insurance_card_photo',
                 'health_insurance_number',
                 'health_insurance_expiration_date',
+                'secondary_id_card',
                 'health_problems',
                 'allergies',
                 'father_name',

@@ -7,7 +7,6 @@
 import os
 
 # - Other Libraries or Frameworks
-from django import forms
 from django.db import models
 from django.utils.translation import ugettext
 
@@ -125,6 +124,12 @@ class Athlete(models.Model):
     health_insurance_expiration_date = models.DateField(
         null=True,
         blank=True,
+    )
+    secondary_id_card = models.ImageField(
+        upload_to=os.path.normpath('cheermin/athletes/secondary_id_card/'),
+        null=True,
+        blank=True,
+        verbose_name=ugettext('Secondary ID Card'),
     )
 
     # TODO: Add checkbox to tell no health issue.
