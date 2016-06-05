@@ -78,3 +78,6 @@ target/
 # Private stuff:
 shell.cmd
 *.old
+spirit_gym/
+*.js
+*.js.map

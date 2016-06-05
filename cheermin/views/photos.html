@@ -7,8 +7,21 @@
         {% csrf_token %}
         {% for athlete in athletes %}
           <div class="form-group">
-            <label for="photo" class="control-label">{{ athlete.first_name }} {{ athlete.last_name }}</label>
-            <input id="photo" type="file" name="photo_{{ athlete.pk }}" class=""></input>
+            <strong>{{ athlete.first_name }} {{ athlete.last_name }}</strong>
+            <div>
+              {% if not athlete.photo %}
+                Photo
+                <input type="file" name="photo_{{ athlete.pk }}"></input>
+              {% endif %}
+              {% if not athlete.health_insurance_card_photo %}
+                Carte d'assurance maladie
+                <input type="file" name="health_insurance_card_photo_{{ athlete.pk }}" class=""></input>
+              {% endif %}
+              {% if not athlete.secondary_id_card %}
+                Autre carte d'identité
+                <input type="file" name="secondary_id_card_{{ athlete.pk }}" class=""></input>
+              {% endif %}
+            </div>
           </div>
         {% endfor %}
         <input class="btn btn-success" type="submit" value="Enregistrer les photos" />

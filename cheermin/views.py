@@ -4,24 +4,19 @@
 # ------
 #
 # - Python Standard Library
-import os
 from io import BytesIO
 
 # - Other Libraries or Frameworks
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.forms import ModelForm
+from django.db.models import Q
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils.translation import ugettext
 from django.views.decorators.cache import never_cache
 from reportlab.lib.pagesizes import letter
-from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.rl_config import defaultPageSize
 
 # - Local application
 from .models.athlete import Athlete, photo_height, photo_width
@@ -161,19 +156,33 @@ def _create_pdf(buffer, athlete):
 @never_cache
 def photos(request):
     """Show list of athletes that are missing a photo."""
-    athletes = Athlete.objects.filter(photo='')
+    athletes = Athlete.objects.filter(Q(photo='') | Q(health_insurance_card_photo='') | Q(secondary_id_card=''))
 
     if request.method == 'POST':
         for input_name, photo in request.FILES.items():
-            athlete_id = input_name.split('_')[1]
+            field, athlete_id = input_name.rsplit('_', 1)
             athlete = Athlete.objects.filter(pk=athlete_id)[0]
 
-            if athlete.photo:
-                error_message = ugettext("Athlete '%(athlete_id)s' already has a picture" % {'athlete_id': athlete_id})
-                return HttpResponseBadRequest('<html><body>%s</body></html>' % error_message)
-
-            athlete.photo = photo
-            athlete.save()
+            if field == 'photo':
+                if athlete.photo:
+                    error_message = ugettext("Athlete '%(athlete_id)s' already has a picture" % {'athlete_id': athlete_id})
+                    return HttpResponseBadRequest('<html><body>%s</body></html>' % error_message)
+                athlete.photo = photo
+                athlete.save()
+            elif field == 'health_insurance_card_photo':
+                if athlete.health_insurance_card_photo:
+                    error_message = ugettext("Athlete '%(athlete_id)s' already has a health insurance card photo" % {'athlete_id': athlete_id})
+                    return HttpResponseBadRequest('<html><body>%s</body></html>' % error_message)
+                athlete.health_insurance_card_photo = photo
+                athlete.save()
+            elif field == 'secondary_id_card':
+                if athlete.secondary_id_card:
+                    error_message = ugettext("Athlete '%(athlete_id)s' already has a secondary ID card photo" % {'athlete_id': athlete_id})
+                    return HttpResponseBadRequest('<html><body>%s</body></html>' % error_message)
+                athlete.secondary_id_card = photo
+                athlete.save()
+            else:
+                return HttpResponseBadRequest('<html><body>Unexpected field received: %s</body></html>' % field)
 
     return render(
         request,
