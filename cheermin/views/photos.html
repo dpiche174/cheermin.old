@@ -1,0 +1,23 @@
+{% extends "views/base.html" %}
+
+{% block content %}
+  {% if athletes %}
+    <div class="container">
+      <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for athlete in athletes %}
+          <div class="form-group">
+            <label for="photo" class="control-label">{{ athlete.first_name }} {{ athlete.last_name }}</label>
+            <input id="photo" type="file" name="photo_{{ athlete.pk }}" class=""></input>
+          </div>
+        {% endfor %}
+        <input class="btn btn-success" type="submit" value="Enregistrer les photos" />
+      </form>
+    </div>
+  {% else %}
+    <div class="jumbotron text-center">
+      <h1><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></h1>
+      <p>Tous les athlètes ont une photo à leur dossier!</p>
+    </div>
+  {% endif %}
+{% endblock %}

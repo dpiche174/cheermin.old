@@ -4,6 +4,7 @@
 # ------
 #
 # - Other libraries and frameworks
+from django import forms
 from django.contrib import admin
 from django.contrib.admin import site
 from django.utils.translation import ugettext
@@ -21,9 +22,17 @@ __author__ = 'Dave Piché'
 site.site_title = 'Cheermin'
 site.site_header = 'Cheermin administration'
 
+class AthleteAdminForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+        model = Athlete
+        widgets = {'birthday': admin.widgets.AdminDateWidget(attrs={'placeholder': 'JJ/MM/AAAA'}),}
+
 @admin.register(Athlete)
 class AthleteAdmin(admin.ModelAdmin):
     """Representation of an athlete in the Django admin interface."""
+
+    form = AthleteAdminForm
 
     ordering = ('first_name', 'last_name')
     readonly_fields = ('country',)

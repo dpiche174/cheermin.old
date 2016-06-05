@@ -1,0 +1,64 @@
+<div class="container-fluid">
+  <p>
+    <div class="row">
+      <div class="col-md-12">
+        <button type="button"
+                class="btn"
+                ng-click="newAttendanceSheet()"
+                >
+          New Attendance Sheet
+        </button>
+      </div>
+    </div>
+  </p>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Team: Black Insanity</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+          <tr><th>Name</th><th class="col-xs-5 col-sm-2 col-md-3">Status</th></tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="athlete in attendance.athletes">
+            <td class="vert-align">{{athlete.first_name}} {{athlete.last_name}}</td>
+            <td>
+              <div class="btn-group" role="group" aria-label="...">
+                <button type="button"
+                        class="btn"
+                        ng-class="athlete.status === 'present' ? 'btn-success active' : 'btn-default'"
+                        ng-click="athlete.setStatus('present')"
+                        >
+                  Présent
+                </button>
+                <button type="button"
+                        class="btn btn-default"
+                        ng-class="athlete.status === 'absent' ? 'btn-danger active' : 'btn-default'"
+                        ng-click="athlete.setStatus('absent')"
+                        >
+                  Absent
+                </button>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    Autre
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </p>
+</div>

@@ -1,0 +1,14 @@
+{% extends "views/base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <div class="container" style="padding-top: 20px;">
+    {% for athlete in athletes %}
+      <div class="row" style="padding-bottom: 1em;">
+        <div class="col-sm-12">
+          <a style="width: 100%; text-align: left; font-weight: bold;" class="btn btn-default" role="button" href="{{ athlete.id }}/">{{ athlete.last_name }}, {{ athlete.first_name }}</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
