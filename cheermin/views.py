@@ -39,8 +39,8 @@ def athletes(request):
 
 @login_required
 def athlete_detail(request, athlete_id):
-    athlete = Athlete.objects.filter(id=athlete_id)[0]
-    fees = FeeBase.objects.filter(team__membership__primary=True).order_by('-amount')
+    query = Q(team__membership__primary=True) & Q(team__membership__athlete__id=athlete_id)
+    fees = FeeBase.objects.filter(query).order_by('-amount')
 
     # Calculate the total.
     total = 0
@@ -56,15 +56,15 @@ def athlete_detail(request, athlete_id):
 
     # Compute the terms of payment.
     terms_of_payment = []
-    for fee in Fee.objects.filter(team__membership__primary=True):
+    for fee in Fee.objects.filter(query):
         amount = fee.amount - (fee.depot or 0)
-        for credit in fee.credit.all():
+        for credit in fee.credit.all().order_by('-amount'):
             amount -= credit.amount
         terms_of_payment.append(('%s dû le ' % fee.name, fee.due_date, amount))
 
-    for fee in MonthlyFee.objects.filter(team__membership__primary=True):
+    for fee in MonthlyFee.objects.filter(query):
         amount = fee.amount - (fee.depot or 0)
-        for credit in fee.credit.all():
+        for credit in fee.credit.all().order_by('-amount'):
             amount -= credit.amount
 
         for month, payment in enumerate(divide(amount, fee.monthly_payment)):
@@ -80,7 +80,7 @@ def athlete_detail(request, athlete_id):
         request,
         'views/athlete_detail.html',
         {
-            'athlete': athlete,
+            'athlete': Athlete.objects.get(id=athlete_id),
             'fees': fees,
             'total': total,
             'depot': depot,
