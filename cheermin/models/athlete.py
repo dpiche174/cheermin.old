@@ -6,6 +6,8 @@
 # - Python Standard Library
 import os
 
+# - Local application
+
 # - Other Libraries or Frameworks
 from django.db import models
 from django.utils.translation import ugettext
@@ -19,15 +21,6 @@ __author__ = 'Dave Piché'
 PROVINCES_CHOICES = (
     ('QC', 'Québec'),
     ('ON', 'Ontario'),
-)
-
-TEAM_CHOICES = (
-    ('YT', 'Youth 1'),
-    ('J2', 'Junior 2'),
-    ('S3', 'Senior 3'),
-    ('S4', 'Senior 4 THE ONE'),
-    ('OP', 'Open 4.2'),
-    ('CR', 'Crossover'),
 )
 
 class Athlete(models.Model):
@@ -87,26 +80,6 @@ class Athlete(models.Model):
         null=True,
         blank=True,
         verbose_name=ugettext('Photo'),
-    )
-
-    # Team selection table.
-    team_choice_1 = models.CharField(
-        max_length=200,
-        choices=TEAM_CHOICES,
-        null=True,
-        blank=True,
-    )
-    team_choice_2 = models.CharField(
-        max_length=200,
-        choices=TEAM_CHOICES,
-        null=True,
-        blank=True,
-    )
-    team_choice_3 = models.CharField(
-        max_length=200,
-        choices=TEAM_CHOICES,
-        null=True,
-        blank=True,
     )
 
     # Personal Health Record

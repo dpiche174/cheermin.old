@@ -4,7 +4,10 @@
 # ------
 #
 # - Python Standard Library
+import calendar
+import datetime
 from io import BytesIO
+from operator import itemgetter
 
 # - Other Libraries or Frameworks
 from django.contrib.auth.decorators import login_required
@@ -19,6 +22,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 # - Local application
+from .models import FeeBase, Fee, MonthlyFee
 from .models.athlete import Athlete, photo_height, photo_width
 
 @login_required
@@ -35,11 +39,66 @@ def athletes(request):
 
 @login_required
 def athlete_detail(request, athlete_id):
+    athlete = Athlete.objects.filter(id=athlete_id)[0]
+    fees = FeeBase.objects.filter(team__membership__primary=True).order_by('-amount')
+
+    # Calculate the total.
+    total = 0
+    for fee in fees:
+        total += fee.amount
+
+        # Subtract applicable credits.
+        for credit in fee.credit.all():
+            total -= credit.amount
+
+    # Calculate the depot.
+    depot = sum(fee.depot or 0 for fee in fees)
+
+    # Compute the terms of payment.
+    terms_of_payment = []
+    for fee in Fee.objects.filter(team__membership__primary=True):
+        amount = fee.amount - (fee.depot or 0)
+        for credit in fee.credit.all():
+            amount -= credit.amount
+        terms_of_payment.append(('%s dû le ' % fee.name, fee.due_date, amount))
+
+    for fee in MonthlyFee.objects.filter(team__membership__primary=True):
+        amount = fee.amount - (fee.depot or 0)
+        for credit in fee.credit.all():
+            amount -= credit.amount
+
+        for month, payment in enumerate(divide(amount, fee.monthly_payment)):
+            terms_of_payment.append((
+                'Versement pour %s dû le ' % fee.name.lower(),
+                add_months(fee.start_date, month),
+                payment,
+            ))
+
+    terms_of_payment = sorted(terms_of_payment, key=itemgetter(1))
+
     return render(
         request,
         'views/athlete_detail.html',
-        {'athlete': Athlete.objects.filter(id=athlete_id)[0]},
+        {
+            'athlete': athlete,
+            'fees': fees,
+            'total': total,
+            'depot': depot,
+            'terms_of_payment': terms_of_payment
+        },
     )
+
+def divide(number, divider):
+    for _ in range(int(float(number) / float(divider))):
+        yield divider
+    yield number % divider
+
+def add_months(sourcedate, months):
+    month = sourcedate.month - 1 + months
+    year = int(sourcedate.year + month / 12)
+    month = month % 12 + 1
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    return datetime.date(year, month, day)
 
 @login_required
 def athlete_print(request, athlete_id):

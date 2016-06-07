@@ -10,7 +10,7 @@ from django.contrib.admin import site
 from django.utils.translation import ugettext
 
 # - Local application
-from .models import Attendance, Team, Practice
+from .models import Attendance, Team, Practice, Fee, MonthlyFee, Credit
 from .models.athlete import Athlete
 
 # -----------------------------------------------------------------------------
@@ -22,17 +22,29 @@ __author__ = 'Dave Piché'
 site.site_title = 'Cheermin'
 site.site_header = 'Cheermin administration'
 
+class TeamInline(admin.TabularInline):
+    """Representation of attendance list."""
+
+    model = Team.athletes.through
+
 class AthleteAdminForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
         model = Athlete
-        widgets = {'birthday': admin.widgets.AdminDateWidget(attrs={'placeholder': 'JJ/MM/AAAA'}),}
+        widgets = {'birthday': admin.widgets.AdminDateWidget(attrs={'placeholder': ugettext('DD/MM/YYYY')}),}
+
+class CreditInline(admin.TabularInline):
+    """Representation of attendance list."""
+
+    model = Credit.athlete.through
 
 @admin.register(Athlete)
 class AthleteAdmin(admin.ModelAdmin):
     """Representation of an athlete in the Django admin interface."""
 
     form = AthleteAdminForm
+
+    inlines = [TeamInline, CreditInline]
 
     ordering = ('first_name', 'last_name')
     readonly_fields = ('country',)
@@ -52,13 +64,11 @@ class AthleteAdmin(admin.ModelAdmin):
                 'photo',
             )
         }),
-        (ugettext('Team Choice'), {
-            'fields': (
-                'team_choice_1',
-                'team_choice_2',
-                'team_choice_3',
-            )
-        }),
+        # (ugettext('Team Choice'), {
+        #     'fields': (
+        #         'team',
+        #     )
+        # }),
         (ugettext('Personal Health Record'), {
             'classes': ('collapse',),
             'fields': (
@@ -84,11 +94,19 @@ class AthleteAdmin(admin.ModelAdmin):
     def get_list_display_links(self, request, list_display):
         return list_display
 
+class FeeInline(admin.TabularInline):
+
+    model = Fee
+
+class MonthlyFeeInline(admin.TabularInline):
+
+    model = MonthlyFee
+
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     """Representation of an athlete in the Django admin interface."""
 
-    pass
+    inlines = [FeeInline, MonthlyFeeInline]
 
 class AttendanceInline(admin.TabularInline):
     """Representation of attendance list."""
@@ -100,3 +118,8 @@ class PracticeAdmin(admin.ModelAdmin):
     """Representation of a practice session."""
 
     inlines = [AttendanceInline]
+
+@admin.register(Credit)
+class CreditAdmin(admin.ModelAdmin):
+
+    pass

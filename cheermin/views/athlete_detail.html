@@ -1,5 +1,6 @@
 {% extends "views/base.html" %}
 {% load staticfiles %}
+{% load humanize %}
 {% load i18n %}
 
 {% block content %}
@@ -107,5 +108,40 @@
       </div>
       <div class="col-sm-4"></div>
     </div>
+
+    {% if fees %}
+      <div class="row">
+        <div class="col-sm-12">
+          <h3>Coûts</h3>
+          <table>
+            {% for fee in fees %}
+              <tr><td>{{ fee.name }}</td><td style="padding-left: 2em; text-align: right;">{{ fee.amount|floatformat:2 }}$</td></tr>
+              {% for credit in fee.credit.all %}
+                <tr><td style="padding-left: 1em;">{{ credit.name }}</td><td style="padding-left: 2em; text-align: right;">-{{ credit.amount|floatformat:2 }}$</td></tr>
+              {% endfor %}
+            {% endfor %}
+            <tr style="border-top: 1px solid #ddd; font-weight: bold;"><td>Total</td><td style="padding-left: 2em;">{{ total|floatformat:2 }}$</td></tr>
+          </table>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if depot or terms_of_payment %}
+      <div class="row">
+        <div class="col-sm-12">
+          <h3>Modalités de paiement</h3>
+          <table>
+            {% if depot %}
+              <tr><td>{% trans "Depot" %}:</td><td style="padding-left: 2em; text-align: right;">{{ depot|floatformat:2 }}$</td></tr>
+            {% endif %}
+
+            {% for term_of_payment in terms_of_payment %}
+              <tr><td>{{ term_of_payment.0 }}{{ term_of_payment.1 }}:</td><td style="padding-left: 2em; text-align: right;">{{ term_of_payment.2|floatformat:2 }}$</td></tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+    {% endif %}
+
   </div>
 {% endblock %}
