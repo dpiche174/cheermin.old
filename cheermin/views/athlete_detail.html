@@ -1,10 +1,40 @@
 {% extends "views/base.html" %}
 {% load staticfiles %}
+{% load admin_urls %}
 {% load humanize %}
 {% load i18n %}
 
 {% block content %}
+  <style>
+    @media screen {
+      .signature_line {
+        display: none;
+      }
+    }
+
+    @media print {
+      .noprint {
+        display: none;
+      }
+
+      .signature_line {
+        float: left;
+        margin: 20px 10px;
+        border-top: 1px solid #000;
+        width: 250px;
+        text-align: center;
+      }
+    }
+  </style>
+
   <div class="container">
+    <div class="row noprint">
+      <div class="col-sm-10"></div>
+      <div class="col-sm-2">
+        <h3><a class="btn btn-default" href="{% url athlete|admin_urlname:'change' athlete.pk %}" role="button">Edit athlete</a></h3>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-sm-8">
         <h3>{% trans "Athlete Personal Information" %}</h3>
@@ -116,7 +146,7 @@
           <table>
             {% for fee in fees %}
               <tr><td>{{ fee.name }}</td><td style="padding-left: 2em; text-align: right;">{{ fee.amount|floatformat:2 }}$</td></tr>
-              {% for credit in fee.credit.all %}
+              {% for credit in athlete.credit.all %}
                 <tr><td style="padding-left: 1em;">{{ credit.name }}</td><td style="padding-left: 2em; text-align: right;">-{{ credit.amount|floatformat:2 }}$</td></tr>
               {% endfor %}
             {% endfor %}
@@ -143,5 +173,12 @@
       </div>
     {% endif %}
 
+    <div class="row">
+      <div class="col-sm-12">
+        <div style="margin-top: 70px;">
+          <span class ="signature_line">Signature de l'athlète majeur ou du parent</span>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}

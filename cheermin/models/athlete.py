@@ -9,6 +9,7 @@ import os
 # - Local application
 
 # - Other Libraries or Frameworks
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext
 
@@ -26,6 +27,8 @@ PROVINCES_CHOICES = (
 class Athlete(models.Model):
     """An athlete."""
 
+    app_label = 'cheermin'
+    model_name = 'athlete'
     verbose_name = ugettext('Athlete')
 
     # Name

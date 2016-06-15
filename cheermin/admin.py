@@ -10,7 +10,7 @@ from django.contrib.admin import site
 from django.utils.translation import ugettext
 
 # - Local application
-from .models import Attendance, Team, Practice, Fee, MonthlyFee, Credit
+from .models import Attendance, Team, Practice, Fee, MonthlyFee, MonthlyFeeVariable, Credit
 from .models.athlete import Athlete
 
 # -----------------------------------------------------------------------------
@@ -94,6 +94,12 @@ class AthleteAdmin(admin.ModelAdmin):
     def get_list_display_links(self, request, list_display):
         return list_display
 
+    def get_absolute_url(self):
+        return '/athletes/%i/' % self.id
+
+    def view_on_site(self, athlete):
+        return '/athletes/%i/' % athlete.id
+
 class FeeInline(admin.TabularInline):
 
     model = Fee
@@ -102,11 +108,15 @@ class MonthlyFeeInline(admin.TabularInline):
 
     model = MonthlyFee
 
+class MonthlyFeeVariableInline(admin.TabularInline):
+
+    model = MonthlyFeeVariable
+
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     """Representation of an athlete in the Django admin interface."""
 
-    inlines = [FeeInline, MonthlyFeeInline]
+    inlines = [FeeInline, MonthlyFeeInline, MonthlyFeeVariableInline]
 
 class AttendanceInline(admin.TabularInline):
     """Representation of attendance list."""

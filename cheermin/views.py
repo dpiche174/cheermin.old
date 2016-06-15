@@ -22,7 +22,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 # - Local application
-from .models import FeeBase, Fee, MonthlyFee
+from .models import FeeBase, Fee, MonthlyFeeVariable
 from .models.athlete import Athlete, photo_height, photo_width
 
 @login_required
@@ -34,7 +34,7 @@ def athletes(request):
     return render(
         request,
         'views/athletes.html',
-        {'athletes': Athlete.objects.all()},
+        {'athletes': Athlete.objects.all().order_by('last_name')},
     )
 
 @login_required
@@ -48,7 +48,7 @@ def athlete_detail(request, athlete_id):
         total += fee.amount
 
         # Subtract applicable credits.
-        for credit in fee.credit.all():
+        for credit in fee.credit.filter(athlete__id=athlete_id):
             total -= credit.amount
 
     # Calculate the depot.
@@ -58,20 +58,32 @@ def athlete_detail(request, athlete_id):
     terms_of_payment = []
     for fee in Fee.objects.filter(query):
         amount = fee.amount - (fee.depot or 0)
-        for credit in fee.credit.all().order_by('-amount'):
+        for credit in fee.credit.filter(athlete__id=athlete_id).order_by('-amount'):
             amount -= credit.amount
         terms_of_payment.append(('%s dû le ' % fee.name, fee.due_date, amount))
 
-    for fee in MonthlyFee.objects.filter(query):
+    # for fee in MonthlyFee.objects.filter(query):
+    #     amount = fee.amount - (fee.depot or 0)
+    #     for credit in fee.credit.filter(athlete__id=athlete_id).order_by('-amount'):
+    #         amount -= credit.amount
+
+    #     for month, payment in enumerate(divide(amount, fee.monthly_payment)):
+    #         terms_of_payment.append((
+    #             'Versement pour %s dû le ' % fee.name.lower(),
+    #             add_months(fee.start_date, month),
+    #             payment,
+    #         ))
+
+    for fee in MonthlyFeeVariable.objects.filter(query):
         amount = fee.amount - (fee.depot or 0)
-        for credit in fee.credit.all().order_by('-amount'):
+        for credit in fee.credit.filter(athlete__id=athlete_id).order_by('-amount'):
             amount -= credit.amount
 
-        for month, payment in enumerate(divide(amount, fee.monthly_payment)):
+        for payment in range(fee.number_of_payments):
             terms_of_payment.append((
                 'Versement pour %s dû le ' % fee.name.lower(),
-                add_months(fee.start_date, month),
-                payment,
+                add_months(fee.start_date, payment),
+                round_to_05(amount / fee.number_of_payments),
             ))
 
     terms_of_payment = sorted(terms_of_payment, key=itemgetter(1))
@@ -88,10 +100,19 @@ def athlete_detail(request, athlete_id):
         },
     )
 
+def round_to(n, precision):
+    correction = 0.5 if n >= 0 else -0.5
+    return int(n / precision + correction) * precision
+
+def round_to_05(n):
+    return round_to(n, 0.05)
+
 def divide(number, divider):
     for _ in range(int(float(number) / float(divider))):
         yield divider
-    yield number % divider
+    remain = number % divider
+    if remain:
+        yield remain
 
 def add_months(sourcedate, months):
     month = sourcedate.month - 1 + months
@@ -215,7 +236,7 @@ def _create_pdf(buffer, athlete):
 @never_cache
 def photos(request):
     """Show list of athletes that are missing a photo."""
-    athletes = Athlete.objects.filter(Q(photo='') | Q(health_insurance_card_photo='') | Q(secondary_id_card=''))
+    athletes = Athlete.objects.filter(Q(photo='') | Q(health_insurance_card_photo='') | Q(secondary_id_card='')).order_by('first_name')
 
     if request.method == 'POST':
         for input_name, photo in request.FILES.items():

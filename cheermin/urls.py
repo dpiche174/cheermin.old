@@ -12,9 +12,8 @@ from . import views
 
 app_name = 'cheermin'
 urlpatterns = [
-    url(r'^$',                                    views.index),
-    url(r'^athletes/$',                           views.athletes),
-    url(r'^athletes/(?P<athlete_id>\d+)/$',       views.athlete_detail),
-    url(r'^athletes/(?P<athlete_id>\d+)/print/$', views.athlete_print),
-    url(r'^inscriptions/photos/$',                views.photos),
+    url(r'^$',                                 views.index),
+    url(r'^athletes/$',                        views.athletes, name='athletes'),
+    url(r'^athletes/(?P<athlete_id>\d+)/$',    views.athlete_detail, name='athlete_detail'),
+    url(r'^inscriptions/photos/$',             views.photos),
 ]

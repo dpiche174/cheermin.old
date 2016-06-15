@@ -123,14 +123,31 @@ class FeeBase(models.Model):
 
 class Fee(FeeBase):
 
+    verbose_name = ugettext('Fee')
     due_date = models.DateField(verbose_name=ugettext('Due Date'), null=True, blank=True)
 
 class MonthlyFee(FeeBase):
     """docstring for MonthlyPayment"""
 
+    verbose_name = ugettext('Monthly Fee')
     monthly_payment = models.FloatField(verbose_name=ugettext('Monthly Payment'), max_length=128, null=True, blank=True)
     start_date = models.DateField(
         verbose_name=ugettext('Start Date'),
+        blank=False,
+        null=True,
+    )
+
+class MonthlyFeeVariable(FeeBase):
+    """docstring for MonthlyPayment"""
+
+    verbose_name = ugettext('Variable Monthly Fee')
+    start_date = models.DateField(
+        verbose_name=ugettext('Start Date'),
+        blank=False,
+        null=True,
+    )
+    number_of_payments = models.IntegerField(
+        verbose_name=ugettext('Number of payments'),
         blank=False,
         null=True,
     )
@@ -139,8 +156,16 @@ class Credit(models.Model):
 
     name = models.CharField(max_length=128)
     amount = models.FloatField(verbose_name=ugettext('Amount'))
-    fee = models.ForeignKey(FeeBase, on_delete=models.CASCADE, related_name='credit')
-    athlete = models.ManyToManyField(Athlete, related_name='credit')
+    fee = models.ForeignKey(
+        FeeBase,
+        on_delete=models.CASCADE,
+        related_name='credit',
+    )
+    athlete = models.ManyToManyField(
+        Athlete,
+        related_name='credit',
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
