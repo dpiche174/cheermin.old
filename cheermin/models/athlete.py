@@ -29,7 +29,6 @@ class Athlete(models.Model):
 
     app_label = 'cheermin'
     model_name = 'athlete'
-    verbose_name = ugettext('Athlete')
 
     # Name
     first_name = models.CharField(max_length=200, verbose_name=ugettext('First name'))
@@ -147,6 +146,10 @@ class Athlete(models.Model):
         null=True,
         blank=True,
     )
+
+    class Meta:
+        verbose_name = ugettext('Athlete')
+        verbose_name_plural = ugettext('Athletes')
 
     def __str__(self):
         """Full name of the person."""

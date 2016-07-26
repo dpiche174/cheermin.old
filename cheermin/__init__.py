@@ -11,7 +11,7 @@ in a cheerleading gym.
 # ---------------
 #
 __author__ = 'Dave Piché'
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 # -----------------------------------------------------------------------------
 # Django configuration

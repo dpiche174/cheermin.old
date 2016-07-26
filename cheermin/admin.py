@@ -6,12 +6,16 @@
 # - Other libraries and frameworks
 from django import forms
 from django.contrib import admin
+from django.contrib.admin import options
 from django.contrib.admin import site
+from django.core.exceptions import ValidationError
+from django.db import models
 from django.utils.translation import ugettext
 
 # - Local application
-from .models import Attendance, Team, Practice, Fee, MonthlyFee, MonthlyFeeVariable, Credit
+from .models import accounting
 from .models.athlete import Athlete
+from .models.team import Team, Membership
 
 # -----------------------------------------------------------------------------
 # Module Metadata
@@ -20,7 +24,7 @@ from .models.athlete import Athlete
 __author__ = 'Dave Piché'
 
 site.site_title = 'Cheermin'
-site.site_header = 'Cheermin administration'
+site.site_header = ugettext('Cheermin Administration')
 
 class TeamInline(admin.TabularInline):
     """Representation of attendance list."""
@@ -31,12 +35,16 @@ class AthleteAdminForm(forms.ModelForm):
     class Meta:
         fields = '__all__'
         model = Athlete
-        widgets = {'birthday': admin.widgets.AdminDateWidget(attrs={'placeholder': ugettext('DD/MM/YYYY')}),}
+        widgets = {'birthday': admin.widgets.AdminDateWidget(attrs={'placeholder': ugettext('DD/MM/YYYY')})}
 
-class CreditInline(admin.TabularInline):
-    """Representation of attendance list."""
+# class CreditInline(admin.TabularInline):
+#     """Representation of attendance list."""
 
-    model = Credit.athlete.through
+#     model = Credit.athlete.through
+
+class MembershipInline(admin.TabularInline):
+
+    model = Membership
 
 @admin.register(Athlete)
 class AthleteAdmin(admin.ModelAdmin):
@@ -44,7 +52,7 @@ class AthleteAdmin(admin.ModelAdmin):
 
     form = AthleteAdminForm
 
-    inlines = [TeamInline, CreditInline]
+    # inlines = [TeamInline, CreditInline]
 
     ordering = ('first_name', 'last_name')
     readonly_fields = ('country',)
@@ -87,6 +95,7 @@ class AthleteAdmin(admin.ModelAdmin):
             )
         }),
     )
+    inlines = [MembershipInline]
 
     def get_list_display(self, request):
         return self.ordering
@@ -102,34 +111,10 @@ class AthleteAdmin(admin.ModelAdmin):
 
 class FeeInline(admin.TabularInline):
 
-    model = Fee
-
-class MonthlyFeeInline(admin.TabularInline):
-
-    model = MonthlyFee
-
-class MonthlyFeeVariableInline(admin.TabularInline):
-
-    model = MonthlyFeeVariable
+    model = accounting.Fee
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     """Representation of an athlete in the Django admin interface."""
 
-    inlines = [FeeInline, MonthlyFeeInline, MonthlyFeeVariableInline]
-
-class AttendanceInline(admin.TabularInline):
-    """Representation of attendance list."""
-
-    model = Attendance
-
-@admin.register(Practice)
-class PracticeAdmin(admin.ModelAdmin):
-    """Representation of a practice session."""
-
-    inlines = [AttendanceInline]
-
-@admin.register(Credit)
-class CreditAdmin(admin.ModelAdmin):
-
-    pass
+    inlines = [FeeInline]

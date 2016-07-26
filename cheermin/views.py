@@ -22,7 +22,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 # - Local application
-from .models import FeeBase, Fee, MonthlyFeeVariable
+from .models.accounting import Fee
 from .models.athlete import Athlete, photo_height, photo_width
 
 @login_required
@@ -40,7 +40,7 @@ def athletes(request):
 @login_required
 def athlete_detail(request, athlete_id):
     query = Q(team__membership__primary=True) & Q(team__membership__athlete__id=athlete_id)
-    fees = FeeBase.objects.filter(query).order_by('-amount')
+    fees = Fee.objects.filter(query).order_by('-amount')
 
     # Calculate the total.
     total = 0
@@ -74,17 +74,17 @@ def athlete_detail(request, athlete_id):
     #             payment,
     #         ))
 
-    for fee in MonthlyFeeVariable.objects.filter(query):
-        amount = fee.amount - (fee.depot or 0)
-        for credit in fee.credit.filter(athlete__id=athlete_id).order_by('-amount'):
-            amount -= credit.amount
+    # for fee in MonthlyFeeVariable.objects.filter(query):
+    #     amount = fee.amount - (fee.depot or 0)
+    #     for credit in fee.credit.filter(athlete__id=athlete_id).order_by('-amount'):
+    #         amount -= credit.amount
 
-        for payment in range(fee.number_of_payments):
-            terms_of_payment.append((
-                'Versement pour %s dû le ' % fee.name.lower(),
-                add_months(fee.start_date, payment),
-                round_to_05(amount / fee.number_of_payments),
-            ))
+    #     for payment in range(fee.number_of_payments):
+    #         terms_of_payment.append((
+    #             'Versement pour %s dû le ' % fee.name.lower(),
+    #             add_months(fee.start_date, payment),
+    #             round_to_05(amount / fee.number_of_payments),
+    #         ))
 
     terms_of_payment = sorted(terms_of_payment, key=itemgetter(1))
 
@@ -269,3 +269,7 @@ def photos(request):
         'views/photos.html',
         {'athletes': athletes},
     )
+
+def test(request):
+    return HttpResponse('<html>Hello World!</html>')
+
