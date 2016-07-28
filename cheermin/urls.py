@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^athletes/$',                        views.athletes, name='athletes'),
     url(r'^athletes/(?P<athlete_id>\d+)/$',    views.athlete_detail, name='athlete_detail'),
     url(r'^inscriptions/photos/$',             views.photos),
+    url(r'^notifications/$',                   views.NotificationsView.as_view(), name='notifications'),
+    url(r'^notifications/sent/$',              views.notification_sent, name='notification_sent'),
 ]

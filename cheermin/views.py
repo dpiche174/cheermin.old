@@ -10,19 +10,23 @@ from io import BytesIO
 from operator import itemgetter
 
 # - Other Libraries or Frameworks
+from django import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mass_mail
 from django.db.models import Q
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render
 from django.utils.translation import ugettext
 from django.views.decorators.cache import never_cache
+from django.views.generic.edit import FormView
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 # - Local application
-from .models import FeeBase, Fee, MonthlyFeeVariable
+from .models import FeeBase, Fee, MonthlyFeeVariable, Team
 from .models.athlete import Athlete, photo_height, photo_width
 
 @login_required
@@ -269,3 +273,79 @@ def photos(request):
         'views/photos.html',
         {'athletes': athletes},
     )
+
+# -----------------------------------------------------------------------------
+# notifications.py
+# ----------------
+#
+class NotificationsForm(forms.Form):
+    recipients = forms.ChoiceField(
+        choices=(
+            ('all', ugettext('All Athletes')),
+            ('specific', ugettext('Specific Athletes')),
+        ),
+        required=True,
+        initial='all',
+        widget=forms.RadioSelect(attrs={
+            'onchange': 'recipients_changed(this.value);',
+        }),
+    )
+    teams = forms.ModelMultipleChoiceField(
+        queryset=Team.objects.all().order_by('name'),
+        required=False,
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+    )
+    athletes = forms.ModelMultipleChoiceField(
+        queryset=Athlete.objects.exclude(email__isnull=True).exclude(email='').order_by('first_name'),
+        required=False,
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+    )
+    subject = forms.CharField(
+        required=True,
+        error_messages={'required': ugettext('Please enter a subject.')},
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': ugettext('Subject'),
+        }),
+    )
+    message = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': ugettext('Message'),
+        }),
+    )
+
+    def send_email(self):
+        """Send email to selected athletes."""
+        if self.cleaned_data['recipients'] == 'all':
+            athletes = Athlete.objects.exclude(email__isnull=True).exclude(email='')
+        else:
+            athletes = list(self.cleaned_data['athletes'])
+            for team in self.cleaned_data['teams']:
+                for athlete in team.athletes.exclude(email__isnull=True).exclude(email=''):
+                    if athlete not in athletes:
+                        athletes.append(athlete)
+
+        recipient_list = []
+        for athlete in athletes:
+            if athlete.email not in recipient_list:
+                recipient_list.append(athlete.email)
+
+        send_mass_mail((self.cleaned_data['subject'], self.cleaned_data['message'], 'Spirit Cheer 07 <info@cheer07.com>', (recipient,)) for recipient in recipient_list)
+
+class NotificationsView(LoginRequiredMixin, FormView):
+
+    template_name = 'views/notifications.html'
+    form_class = NotificationsForm
+    success_url = '/notifications/sent/'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.send_email()
+        return super(NotificationsView, self).form_valid(form)
+
+@login_required
+def notification_sent(request):
+    return render(request, 'views/notification_sent.html')

@@ -1,0 +1,9 @@
+{% extends "views/base.html" %}
+{% load i18n %}
+
+{% block content %}
+  <div class="jumbotron text-center">
+    <h1><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></h1>
+    <p>{% trans "Message sent!" %}</p>
+  </div>
+{% endblock %}
