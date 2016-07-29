@@ -366,6 +366,11 @@ class NotificationsForm(forms.Form):
             for coach in self.cleaned_data['coaches']:
                 email_addresses.add(coach.email)
 
+        if not email_addresses:
+            raise Exception('No email selected')
+
+        email_addresses.add('Spirit Cheer 07 <info@cheer07.com>')
+
         for email in email_addresses:
             logger.info('Sending email to {}'.format(email))
 
