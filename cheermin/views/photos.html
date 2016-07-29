@@ -10,16 +10,22 @@
             <strong>{{ athlete.first_name }} {{ athlete.last_name }}</strong>
             <div>
               {% if not athlete.photo %}
-                Photo
-                <input type="file" name="photo_{{ athlete.pk }}"></input>
+                <label class="btn btn-default btn-file">
+                  Photo
+                  <input type="file" name="photo_{{ athlete.pk }}" style="display: none;">
+                </label>
               {% endif %}
               {% if not athlete.health_insurance_card_photo %}
-                Carte d'assurance maladie
-                <input type="file" name="health_insurance_card_photo_{{ athlete.pk }}" class=""></input>
+                <label class="btn btn-default btn-file">
+                  Carte d'assurance maladie
+                  <input type="file" name="health_insurance_card_photo_{{ athlete.pk }}" style="display: none;">
+                </label>
               {% endif %}
               {% if not athlete.secondary_id_card %}
-                Autre carte d'identité
-                <input type="file" name="secondary_id_card_{{ athlete.pk }}" class=""></input>
+                <label class="btn btn-default btn-file">
+                  Autre carte d'identité
+                  <input type="file" name="secondary_id_card_{{ athlete.pk }}" style="display: none;">
+                </label>
               {% endif %}
             </div>
           </div>
