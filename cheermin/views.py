@@ -6,6 +6,7 @@
 # - Python Standard Library
 import calendar
 import datetime
+import logging
 from io import BytesIO
 from operator import itemgetter
 
@@ -13,7 +14,9 @@ from operator import itemgetter
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.core.mail import send_mass_mail
+from django.core.validators import validate_email
 from django.db.models import Q
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
@@ -28,6 +31,9 @@ from reportlab.pdfgen import canvas
 # - Local application
 from .models import FeeBase, Fee, MonthlyFeeVariable, Team
 from .models.athlete import Athlete, photo_height, photo_width
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 @login_required
 def index(request):
@@ -278,11 +284,27 @@ def photos(request):
 # notifications.py
 # ----------------
 #
+class UserMultipleChoiceField(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return '{} {}'.format(obj.first_name, obj.last_name)
+
+class MultipleEmailField(forms.CharField):
+    """Text input field letting the user enter multiple email addresses separated be a comma."""
+    def clean(self, value):
+        email_addresses = []
+        value = super(MultipleEmailField, self).clean(value)
+        if value:
+            for email in value.split(','):
+                email = email.strip()
+                validate_email(email)
+                email_addresses.append(email)
+        return email_addresses
+
 class NotificationsForm(forms.Form):
     recipients = forms.ChoiceField(
         choices=(
-            ('all', ugettext('All Athletes')),
-            ('specific', ugettext('Specific Athletes')),
+            ('all', ugettext('All Athletes & Coaches')),
+            ('specific', ugettext('Specific People')),
         ),
         required=True,
         initial='all',
@@ -299,6 +321,17 @@ class NotificationsForm(forms.Form):
         queryset=Athlete.objects.exclude(email__isnull=True).exclude(email='').order_by('first_name'),
         required=False,
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+    )
+    coaches = UserMultipleChoiceField(
+        queryset=User.objects.exclude(email__isnull=True).exclude(email='').order_by('first_name'),
+        required=False,
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+    )
+    additional_emails = MultipleEmailField(
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+        }),
     )
     subject = forms.CharField(
         required=True,
@@ -318,21 +351,25 @@ class NotificationsForm(forms.Form):
 
     def send_email(self):
         """Send email to selected athletes."""
+        email_addresses = set(self.cleaned_data['additional_emails'])
         if self.cleaned_data['recipients'] == 'all':
-            athletes = Athlete.objects.exclude(email__isnull=True).exclude(email='')
+            for athlete in Athlete.objects.exclude(email__isnull=True).exclude(email=''):
+                email_addresses.add(athlete.email)
+            for coach in User.objects.exclude(email__isnull=True).exclude(email=''):
+                email_addresses.add(coach.email)
         else:
-            athletes = list(self.cleaned_data['athletes'])
+            for athlete in self.cleaned_data['athletes']:
+                email_addresses.add(athlete.email)
             for team in self.cleaned_data['teams']:
                 for athlete in team.athletes.exclude(email__isnull=True).exclude(email=''):
-                    if athlete not in athletes:
-                        athletes.append(athlete)
+                    email_addresses.add(athlete.email)
+            for coach in self.cleaned_data['coaches']:
+                email_addresses.add(coach.email)
 
-        recipient_list = []
-        for athlete in athletes:
-            if athlete.email not in recipient_list:
-                recipient_list.append(athlete.email)
+        for email in email_addresses:
+            logger.info('Sending email to {}'.format(email))
 
-        send_mass_mail((self.cleaned_data['subject'], self.cleaned_data['message'], 'Spirit Cheer 07 <info@cheer07.com>', (recipient,)) for recipient in recipient_list)
+        send_mass_mail((self.cleaned_data['subject'], self.cleaned_data['message'], 'Spirit Cheer 07 <info@cheer07.com>', (email,)) for email in email_addresses)
 
 class NotificationsView(LoginRequiredMixin, FormView):
 
