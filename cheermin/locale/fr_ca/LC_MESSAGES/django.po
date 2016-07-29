@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-09 08:02-0400\n"
+"POT-Creation-Date: 2016-07-28 23:51-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,176 +16,237 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\cheermin\admin.py:34
+#: .\cheermin\cheermin\admin.py:34
 msgid "DD/MM/YYYY"
 msgstr "JJ/MM/AAAA"
 
-#: .\cheermin\admin.py:52
+#: .\cheermin\cheermin\admin.py:52
 msgid "Personal Information"
 msgstr "Informations personnelles de l'athlète"
 
-#: .\cheermin\admin.py:72
+#: .\cheermin\cheermin\admin.py:72
 msgid "Personal Health Record"
 msgstr "Fiche de santé"
 
-#: .\cheermin\models\__init__.py:29
+#: .\cheermin\cheermin\models\__init__.py:29
 msgid "Team"
 msgstr "Équipe"
 
-#: .\cheermin\models\__init__.py:75
+#: .\cheermin\cheermin\models\__init__.py:75
 msgid "Practice"
 msgstr "Pratique"
 
-#: .\cheermin\models\__init__.py:102 .\cheermin\models\athlete.py:32
+#: .\cheermin\cheermin\models\__init__.py:102
+#: .\cheermin\cheermin\models\athlete.py:35
 msgid "First name"
 msgstr "Prénom"
 
-#: .\cheermin\models\__init__.py:103 .\cheermin\models\athlete.py:33
+#: .\cheermin\cheermin\models\__init__.py:103
+#: .\cheermin\cheermin\models\athlete.py:36
 msgid "Last name"
 msgstr "Nom de famille"
 
-#: .\cheermin\models\__init__.py:121 .\cheermin\models\__init__.py:158
+#: .\cheermin\cheermin\models\__init__.py:121
+#: .\cheermin\cheermin\models\__init__.py:158
 #, fuzzy
 #| msgid "Country"
 msgid "Amount"
 msgstr "Pays"
 
-#: .\cheermin\models\__init__.py:122 .\cheermin\views\athlete_detail.html:135
+#: .\cheermin\cheermin\models\__init__.py:122
+#: .\cheermin\cheermin\views\athlete_detail.html:165
 msgid "Depot"
 msgstr "Dépôt"
 
-#: .\cheermin\models\__init__.py:126
+#: .\cheermin\cheermin\models\__init__.py:126
 msgid "Fee"
 msgstr "Frais"
 
-#: .\cheermin\models\__init__.py:127
+#: .\cheermin\cheermin\models\__init__.py:127
 msgid "Due Date"
 msgstr "Date de paiement"
 
-#: .\cheermin\models\__init__.py:132
+#: .\cheermin\cheermin\models\__init__.py:132
 msgid "Monthly Fee"
 msgstr "Frais mensuel"
 
-#: .\cheermin\models\__init__.py:133
+#: .\cheermin\cheermin\models\__init__.py:133
 msgid "Monthly Payment"
 msgstr "Versement mensuel"
 
-#: .\cheermin\models\__init__.py:135 .\cheermin\models\__init__.py:145
+#: .\cheermin\cheermin\models\__init__.py:135
+#: .\cheermin\cheermin\models\__init__.py:145
 msgid "Start Date"
 msgstr "Date du premier paiement"
 
-#: .\cheermin\models\__init__.py:143
+#: .\cheermin\cheermin\models\__init__.py:143
 #, fuzzy
 #| msgid "Monthly Fee"
 msgid "Variable Monthly Fee"
 msgstr "Frais mensuel"
 
-#: .\cheermin\models\__init__.py:150
+#: .\cheermin\cheermin\models\__init__.py:150
 msgid "Number of payments"
 msgstr "Nombre de paiements"
 
-#: .\cheermin\models\athlete.py:29
+#: .\cheermin\cheermin\models\athlete.py:32
 msgid "Athlete"
 msgstr "Athlète"
 
-#: .\cheermin\models\athlete.py:40
+#: .\cheermin\cheermin\models\athlete.py:43
 msgid "Street"
 msgstr "Rue"
 
-#: .\cheermin\models\athlete.py:46
+#: .\cheermin\cheermin\models\athlete.py:49
 msgid "City"
 msgstr "Ville"
 
-#: .\cheermin\models\athlete.py:54
+#: .\cheermin\cheermin\models\athlete.py:57
 msgid "Province"
 msgstr "Province"
 
-#: .\cheermin\models\athlete.py:62
+#: .\cheermin\cheermin\models\athlete.py:65
 msgid "Country"
 msgstr "Pays"
 
-#: .\cheermin\models\athlete.py:68
+#: .\cheermin\cheermin\models\athlete.py:71
 msgid "Postal code"
 msgstr "Code postal"
 
-#: .\cheermin\models\athlete.py:72
+#: .\cheermin\cheermin\models\athlete.py:75
 msgid "Birthday"
 msgstr "Date de naissance"
 
-#: .\cheermin\models\athlete.py:75 .\cheermin\views.py:194
-#: .\cheermin\views\athlete_detail.html:68
+#: .\cheermin\cheermin\models\athlete.py:78 .\cheermin\cheermin\views.py:204
+#: .\cheermin\cheermin\views\athlete_detail.html:98
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: .\cheermin\models\athlete.py:76 .\cheermin\views.py:198
-#: .\cheermin\views\athlete_detail.html:72
+#: .\cheermin\cheermin\models\athlete.py:79 .\cheermin\cheermin\views.py:208
+#: .\cheermin\cheermin\views\athlete_detail.html:102
 msgid "Email address"
 msgstr "Adresse courriel"
 
-#: .\cheermin\models\athlete.py:82
+#: .\cheermin\cheermin\models\athlete.py:85
 msgid "Photo"
 msgstr "Photo"
 
-#: .\cheermin\models\athlete.py:90
+#: .\cheermin\cheermin\models\athlete.py:93
 msgid "Health Insurance Card"
 msgstr ""
 
-#: .\cheermin\models\athlete.py:105
+#: .\cheermin\cheermin\models\athlete.py:108
 msgid "Secondary ID Card"
 msgstr ""
 
-#: .\cheermin\views.py:163 .\cheermin\views\athlete_detail.html.py:10
+#: .\cheermin\cheermin\views.py:173
+#: .\cheermin\cheermin\views\athlete_detail.html:40
 msgid "Athlete Personal Information"
 msgstr "Informations personnelles de l'athlète"
 
-#: .\cheermin\views.py:167 .\cheermin\views\athlete_detail.html.py:36
+#: .\cheermin\cheermin\views.py:177
+#: .\cheermin\cheermin\views\athlete_detail.html:66
 msgid "Name"
 msgstr "Nom"
 
-#: .\cheermin\views.py:180 .\cheermin\views\athlete_detail.html.py:44
+#: .\cheermin\cheermin\views.py:190
+#: .\cheermin\cheermin\views\athlete_detail.html:74
 msgid "Address"
 msgstr "Adresse"
 
-#: .\cheermin\views.py:190 .\cheermin\views\athlete_detail.html.py:64
+#: .\cheermin\cheermin\views.py:200
+#: .\cheermin\cheermin\views\athlete_detail.html:94
 msgid "Age on September 1st"
 msgstr "Âge au 1er septembre"
 
-#: .\cheermin\views.py:248
+#: .\cheermin\cheermin\views.py:258
 #, python-format
 msgid "Athlete '%(athlete_id)s' already has a picture"
 msgstr "L'athlète '%(athlete_id)s' a déjà une photo"
 
-#: .\cheermin\views.py:254
+#: .\cheermin\cheermin\views.py:264
 #, fuzzy, python-format
 #| msgid "Athlete '%(athlete_id)s' already has a picture"
 msgid "Athlete '%(athlete_id)s' already has a health insurance card photo"
 msgstr "L'athlète '%(athlete_id)s' a déjà une photo"
 
-#: .\cheermin\views.py:260
+#: .\cheermin\cheermin\views.py:270
 #, fuzzy, python-format
 #| msgid "Athlete '%(athlete_id)s' already has a picture"
 msgid "Athlete '%(athlete_id)s' already has a secondary ID card photo"
 msgstr "L'athlète '%(athlete_id)s' a déjà une photo"
 
-#: .\cheermin\views\athlete_detail.html:20
+#: .\cheermin\cheermin\views.py:306
+msgid "All Athletes & Coaches"
+msgstr "Tous les athlètes & entraîneurs"
+
+#: .\cheermin\cheermin\views.py:307
+msgid "Specific People"
+msgstr "Personnes spécifiques"
+
+#: .\cheermin\cheermin\views.py:338
+msgid "Please enter a subject."
+msgstr "Entrer un sujet"
+
+#: .\cheermin\cheermin\views.py:341
+msgid "Subject"
+msgstr "Sujet"
+
+#: .\cheermin\cheermin\views.py:348
+msgid "Message"
+msgstr "Message"
+
+#: .\cheermin\cheermin\views\athlete_detail.html:50
 msgid "Get PDF"
 msgstr "Télécharger PDF"
 
-#: .\cheermin\views\athlete_detail.html:40
+#: .\cheermin\cheermin\views\athlete_detail.html:70
 msgid "ID"
 msgstr ""
 
-#: .\cheermin\views\nav.html:13
+#: .\cheermin\cheermin\views\nav.html:13
 msgid "Home"
 msgstr "Accueil"
 
-#: .\cheermin\views\nav.html:18
+#: .\cheermin\cheermin\views\nav.html:19
 msgid "Administration"
 msgstr ""
 
-#: .\cheermin\views\nav.html:19
+#: .\cheermin\cheermin\views\nav.html:20
 msgid "Logout"
 msgstr "Déconnexion"
+
+#: .\cheermin\cheermin\views\notification_sent.html:7
+msgid "Message sent!"
+msgstr "Message envoyé!"
+
+#: .\cheermin\cheermin\views\notifications.html:8
+msgid "Recipients"
+msgstr "Destinataires"
+
+#: .\cheermin\cheermin\views\notifications.html:22
+msgid "Teams"
+msgstr "Équipes"
+
+#: .\cheermin\cheermin\views\notifications.html:23
+msgid "Athletes"
+msgstr "Athlètes"
+
+#: .\cheermin\cheermin\views\notifications.html:24
+msgid "Coaches"
+msgstr "Entraîneurs"
+
+#: .\cheermin\cheermin\views\notifications.html:28
+msgid "Additional Emails"
+msgstr "Adresses additionelles"
+
+#: .\cheermin\cheermin\views\notifications.html:54
+msgid "Send"
+msgstr "Envoyer"
+
+#: .\cheermin\cheermin\views\notifications.html:55
+msgid "Reset"
+msgstr "Réinitialiser"
 
 #~ msgid "Team Choice"
 #~ msgstr "Choix des équipes"
