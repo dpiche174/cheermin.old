@@ -13,6 +13,7 @@
         <li {% if request.path == "/" %}class="active"{% endif %}><a href="/">{% trans "Home" %}</a></li>
         <li {% if request.path|slice:":10" == "/athletes/" %}class="active"{% endif %}><a href="/athletes/">Athlètes</a></li>
         <li {% if request.path == "/inscriptions/photos/" %}class="active"{% endif %}><a href="/inscriptions/photos/">Photos</a></li>
+        <li {% if request.path == "/notifications/" %}class="active"{% endif %}><a href="/notifications/">Notifications</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/admin/">{% trans "Administration" %}</a></li>
