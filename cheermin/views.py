@@ -343,6 +343,7 @@ class NotificationsForm(forms.Form):
     )
     message = forms.CharField(
         required=False,
+        initial='\n\nSpirit Cheer 07\ninfo@cheer07.com\nwww.cheer07.com',
         widget=forms.Textarea(attrs={
             'class': 'form-control',
             'placeholder': ugettext('Message'),
