@@ -301,15 +301,11 @@ class MultipleEmailField(forms.CharField):
         return email_addresses
 
 class NotificationsForm(forms.Form):
-    recipients = forms.ChoiceField(
-        choices=(
-            ('all', ugettext('All Athletes & Coaches')),
-            ('specific', ugettext('Specific People')),
-        ),
-        required=True,
-        initial='all',
-        widget=forms.RadioSelect(attrs={
-            'onchange': 'recipients_changed(this.value);',
+    sent_to_all = forms.BooleanField(
+        label=ugettext('Sent to all'),
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'onchange': 'recipients_changed(this.checked);',
         }),
     )
     teams = forms.ModelMultipleChoiceField(
@@ -353,7 +349,7 @@ class NotificationsForm(forms.Form):
     def send_email(self):
         """Send email to selected athletes."""
         email_addresses = set(self.cleaned_data['additional_emails'])
-        if self.cleaned_data['recipients'] == 'all':
+        if self.cleaned_data['sent_to_all']:
             for athlete in Athlete.objects.exclude(email__isnull=True).exclude(email=''):
                 email_addresses.add(athlete.email)
             for coach in User.objects.exclude(email__isnull=True).exclude(email=''):

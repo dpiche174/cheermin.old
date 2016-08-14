@@ -1,28 +1,23 @@
-{% extends "views/base.html" %}
+﻿{% extends "views/base.html" %}
 {% load i18n %}
 
 {% block content %}
   <div class="container" style="padding-top: 20px;">
-    <form action="" method="post" onsubmit="recipients_changed();">{% csrf_token %}
+    <form action="" method="post" onsubmit="recipients_changed($('#{{ form.sent_to_all.auto_id }}').prop('checked'));">{% csrf_token %}
       {{ form.non_field_errors }}
       <h4>{% trans "Recipients" %}</h4>
-      <div class="form-group">
-        {% for recipient in form.recipients %}
-          <div class="radio">
-            <label for="{{ recipient.id_for_label }}">
-              {{ recipient.tag }}
-              {{ recipient.choice_label }}
-            </label>
-          </div>
-        {% endfor %}
-      </div>
 
-      <div id="recipient_list" class="form-group" style="display: none;">
+      <div id="recipient_list" class="form-group">
         <div class="row">
           <div class="col-sm-4">{% trans "Teams" %}{{ form.teams }}</div>
           <div class="col-sm-4">{% trans "Athletes" %}{{ form.athletes }}</div>
           <div class="col-sm-4">{% trans "Coaches" %}{{ form.coaches }}</div>
         </div>
+      </div>
+
+      <div class="form-group">
+        {{ form.sent_to_all }}
+        {{ form.sent_to_all.label }}
       </div>
 
       <h4>{% trans "Additional Emails" %}</h4>
@@ -52,21 +47,14 @@
       </div>
 
       <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
-      <button type="reset" class="btn btn-default" onclick="recipients_changed(null);">{% trans "Reset" %}</button>
+      <button type="reset" class="btn btn-default" onclick="recipients_changed(false);">{% trans "Reset" %}</button>
     </form>
   </div>
 
   <script type="text/javascript">
-    function recipients_changed(recipient) {
-        if (recipient === undefined) {
-            recipient = $('input[name=recipients]:checked').val();
-        }
-        if (recipient === "specific") {
-            $("#recipient_list").show("fast");
-        } else {
-            $("#recipient_list").hide("fast");
-        }
+    function recipients_changed(checked) {
+        $("#recipient_list select").prop("disabled", checked);
     }
-    window.onload = recipients_changed;
+    window.onload = function() {recipients_changed($("#{{ form.sent_to_all.auto_id }}").prop("checked"))};
   </script>
 {% endblock %}
