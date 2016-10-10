@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-10 07:15-0400\n"
+"POT-Creation-Date: 2016-10-10 09:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,7 +24,7 @@ msgstr "JJ/MM/AAAA"
 msgid "Personal Information"
 msgstr "Informations personnelles de l'athlète"
 
-#: .\cheermin\cheermin\admin.py:72
+#: .\cheermin\cheermin\admin.py:73
 msgid "Personal Health Record"
 msgstr "Fiche de santé"
 
@@ -93,49 +93,61 @@ msgstr "Nombre de paiements"
 msgid "Athlete"
 msgstr "Athlète"
 
-#: .\cheermin\cheermin\models\athlete.py:46
+#: .\cheermin\cheermin\models\athlete.py:42
+msgid "Active"
+msgstr "Actif"
+
+#: .\cheermin\cheermin\models\athlete.py:43
+msgid ""
+"If the athlete is not active he won't show up in the forms and he won't "
+"receive emails."
+msgstr ""
+"Si l'ahtlète n'est pas actif il n'apparaîtra pas dans les formulaires et ne "
+"recevra pas les courriels."
+
+#: .\cheermin\cheermin\models\athlete.py:51
 msgid "Street"
 msgstr "Rue"
 
-#: .\cheermin\cheermin\models\athlete.py:52
+#: .\cheermin\cheermin\models\athlete.py:57
 msgid "City"
 msgstr "Ville"
 
-#: .\cheermin\cheermin\models\athlete.py:60
+#: .\cheermin\cheermin\models\athlete.py:65
 msgid "Province"
 msgstr "Province"
 
-#: .\cheermin\cheermin\models\athlete.py:68
+#: .\cheermin\cheermin\models\athlete.py:73
 msgid "Country"
 msgstr "Pays"
 
-#: .\cheermin\cheermin\models\athlete.py:74
+#: .\cheermin\cheermin\models\athlete.py:79
 msgid "Postal code"
 msgstr "Code postal"
 
-#: .\cheermin\cheermin\models\athlete.py:78
+#: .\cheermin\cheermin\models\athlete.py:83
 msgid "Birthday"
 msgstr "Date de naissance"
 
-#: .\cheermin\cheermin\models\athlete.py:81 .\cheermin\cheermin\views.py:204
+#: .\cheermin\cheermin\models\athlete.py:86 .\cheermin\cheermin\views.py:204
 #: .\cheermin\cheermin\views\athlete_detail.html:98
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: .\cheermin\cheermin\models\athlete.py:82
+#: .\cheermin\cheermin\models\athlete.py:87
 #: .\cheermin\cheermin\views\athlete_detail.html:102
 msgid "Email addresses"
 msgstr "Adresses courriels"
 
-#: .\cheermin\cheermin\models\athlete.py:88
+#: .\cheermin\cheermin\models\athlete.py:93
 msgid "Photo"
 msgstr "Photo"
 
-#: .\cheermin\cheermin\models\athlete.py:96
+#: .\cheermin\cheermin\models\athlete.py:101
 msgid "Health Insurance Card"
 msgstr ""
 
-#: .\cheermin\cheermin\models\athlete.py:111
+#: .\cheermin\cheermin\models\athlete.py:116
 msgid "Secondary ID Card"
 msgstr ""
 

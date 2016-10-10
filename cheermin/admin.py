@@ -53,6 +53,7 @@ class AthleteAdmin(admin.ModelAdmin):
             'fields': (
                 'first_name',
                 'last_name',
+                'active',
                 'street',
                 'city',
                 'province',

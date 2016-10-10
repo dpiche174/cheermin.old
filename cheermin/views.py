@@ -246,7 +246,7 @@ def _create_pdf(buffer, athlete):
 @never_cache
 def photos(request):
     """Show list of athletes that are missing a photo."""
-    athletes = Athlete.objects.filter(Q(photo='') | Q(health_insurance_card_photo='') | Q(secondary_id_card='')).order_by('first_name')
+    athletes = Athlete.objects.exclude(active=False).filter(Q(photo='') | Q(health_insurance_card_photo='') | Q(secondary_id_card='')).order_by('first_name')
 
     if request.method == 'POST':
         for input_name, photo in request.FILES.items():
@@ -314,7 +314,7 @@ class NotificationsForm(forms.Form):
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
     )
     athletes = forms.ModelMultipleChoiceField(
-        queryset=Athlete.objects.exclude(email__isnull=True).exclude(email='').order_by('first_name'),
+        queryset=Athlete.objects.exclude(active=False).exclude(email__isnull=True).exclude(email='').order_by('first_name'),
         required=False,
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
     )
@@ -350,7 +350,7 @@ class NotificationsForm(forms.Form):
         """Send email to selected athletes."""
         email_addresses = set(self.cleaned_data['additional_emails'])
         if self.cleaned_data['sent_to_all']:
-            for athlete in Athlete.objects.exclude(email__isnull=True).exclude(email=''):
+            for athlete in Athlete.objects.exclude(active=False).exclude(email__isnull=True).exclude(email=''):
                 email_addresses.update(athlete.email_addresses)
             for coach in User.objects.exclude(email__isnull=True).exclude(email=''):
                 email_addresses.add(coach.email)
@@ -358,7 +358,7 @@ class NotificationsForm(forms.Form):
             for athlete in self.cleaned_data['athletes']:
                 email_addresses.update(athlete.email_addresses)
             for team in self.cleaned_data['teams']:
-                for athlete in team.athletes.exclude(email__isnull=True).exclude(email=''):
+                for athlete in team.athletes.exclude(active=False).exclude(email__isnull=True).exclude(email=''):
                     email_addresses.update(athlete.email_addresses)
             for coach in self.cleaned_data['coaches']:
                 email_addresses.add(coach.email)

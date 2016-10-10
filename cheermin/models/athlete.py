@@ -38,6 +38,11 @@ class Athlete(models.Model):
     first_name = models.CharField(max_length=200, verbose_name=ugettext_lazy('First name'))
     last_name = models.CharField(max_length=200, verbose_name=ugettext_lazy('Last name'))
 
+    active = models.BooleanField( null=False, blank=False, default=True
+                                , verbose_name=ugettext_lazy('Active')
+                                , help_text=ugettext_lazy("If the athlete is not active he won't show up in the forms and he won't receive emails.")
+                                )
+
     # Address
     street = models.CharField(
         max_length=200,
