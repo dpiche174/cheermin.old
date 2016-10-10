@@ -99,8 +99,12 @@
           <div class="col-sm-8">{{ athlete.phone_number }}</div>
         </div>
         <div class="row">
-          <div class="col-sm-4"><strong>{% trans "Email address" %}:</strong></div>
-          <div class="col-sm-8">{{ athlete.email }}</div>
+          <div class="col-sm-4"><strong>{% trans "Email addresses" %}:</strong></div>
+          <div class="col-sm-8">
+            {% for address in athlete.email_addresses %}
+              <a href="mailto:{{ address }}">{{ address }}</a><br>
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>

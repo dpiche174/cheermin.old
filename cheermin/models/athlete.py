@@ -11,7 +11,8 @@ import os
 # - Other Libraries or Frameworks
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext_lazy
+from multi_email_field.fields import MultiEmailField
 
 # -----------------------------------------------------------------------------
 # Module Metadata
@@ -29,24 +30,26 @@ class Athlete(models.Model):
 
     app_label = 'cheermin'
     model_name = 'athlete'
-    verbose_name = ugettext('Athlete')
+
+    class Meta:
+        verbose_name = ugettext_lazy('Athlete')
 
     # Name
-    first_name = models.CharField(max_length=200, verbose_name=ugettext('First name'))
-    last_name = models.CharField(max_length=200, verbose_name=ugettext('Last name'))
+    first_name = models.CharField(max_length=200, verbose_name=ugettext_lazy('First name'))
+    last_name = models.CharField(max_length=200, verbose_name=ugettext_lazy('Last name'))
 
     # Address
     street = models.CharField(
         max_length=200,
         null=True,
         blank=False,
-        verbose_name=ugettext('Street'),
+        verbose_name=ugettext_lazy('Street'),
     )
     city = models.CharField(
         max_length=200,
         null=True,
         blank=False,
-        verbose_name=ugettext('City'),
+        verbose_name=ugettext_lazy('City'),
     )
     province = models.CharField(
         max_length=200,
@@ -54,7 +57,7 @@ class Athlete(models.Model):
         default='QC',
         null=True,
         blank=False,
-        verbose_name=ugettext('Province'),
+        verbose_name=ugettext_lazy('Province'),
     )
     country = models.CharField(
         max_length=200,
@@ -62,27 +65,27 @@ class Athlete(models.Model):
         default='Canada',
         null=True,
         blank=False,
-        verbose_name=ugettext('Country'),
+        verbose_name=ugettext_lazy('Country'),
     )
     postal_code = models.CharField(
         max_length=200,
         null=True,
         blank=False,
-        verbose_name=ugettext('Postal code'),
+        verbose_name=ugettext_lazy('Postal code'),
     )
 
     # Age
-    birthday = models.DateField(null=True, blank=False, verbose_name=ugettext('Birthday'))
+    birthday = models.DateField(null=True, blank=False, verbose_name=ugettext_lazy('Birthday'))
 
     # Contact
-    phone_number = models.CharField(max_length=200, null=True, blank=False, verbose_name=ugettext('Phone number'))
-    email = models.EmailField(null=True, blank=True, verbose_name=ugettext('Email address'))
+    phone_number = models.CharField(max_length=200, null=True, blank=False, verbose_name=ugettext_lazy('Phone number'))
+    email = MultiEmailField(null=True, blank=True, verbose_name=ugettext_lazy('Email addresses'))
 
     photo = models.ImageField(
         upload_to=os.path.normpath('cheermin/athletes/'),
         null=True,
         blank=True,
-        verbose_name=ugettext('Photo'),
+        verbose_name=ugettext_lazy('Photo'),
     )
 
     # Personal Health Record
@@ -90,7 +93,7 @@ class Athlete(models.Model):
         upload_to=os.path.normpath('cheermin/athletes/health_insurance_card/'),
         null=True,
         blank=True,
-        verbose_name=ugettext('Health Insurance Card'),
+        verbose_name=ugettext_lazy('Health Insurance Card'),
     )
     health_insurance_number = models.CharField(
         max_length=200,
@@ -105,7 +108,7 @@ class Athlete(models.Model):
         upload_to=os.path.normpath('cheermin/athletes/secondary_id_card/'),
         null=True,
         blank=True,
-        verbose_name=ugettext('Secondary ID Card'),
+        verbose_name=ugettext_lazy('Secondary ID Card'),
     )
 
     # TODO: Add checkbox to tell no health issue.
@@ -151,6 +154,16 @@ class Athlete(models.Model):
     def __str__(self):
         """Full name of the person."""
         return '{0} {1}'.format(self.first_name, self.last_name)
+
+    @property
+    def email_addresses(self):
+        """Return althetes email addresses."""
+        return self.email.split('\n')
+
+    @email_addresses.setter
+    def email_addresses(self, addreses):
+        """Set athlete email addresses."""
+        self.email = '\n'.join(addresses)
 
 photo_height = 265  # px
 photo_width = 206  # px

@@ -351,15 +351,15 @@ class NotificationsForm(forms.Form):
         email_addresses = set(self.cleaned_data['additional_emails'])
         if self.cleaned_data['sent_to_all']:
             for athlete in Athlete.objects.exclude(email__isnull=True).exclude(email=''):
-                email_addresses.add(athlete.email)
+                email_addresses.update(athlete.email_addresses)
             for coach in User.objects.exclude(email__isnull=True).exclude(email=''):
                 email_addresses.add(coach.email)
         else:
             for athlete in self.cleaned_data['athletes']:
-                email_addresses.add(athlete.email)
+                email_addresses.update(athlete.email_addresses)
             for team in self.cleaned_data['teams']:
                 for athlete in team.athletes.exclude(email__isnull=True).exclude(email=''):
-                    email_addresses.add(athlete.email)
+                    email_addresses.update(athlete.email_addresses)
             for coach in self.cleaned_data['coaches']:
                 email_addresses.add(coach.email)
 

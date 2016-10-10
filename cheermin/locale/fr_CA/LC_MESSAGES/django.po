@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-14 19:44-0400\n"
+"POT-Creation-Date: 2016-10-10 07:15-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,12 +37,12 @@ msgid "Practice"
 msgstr "Pratique"
 
 #: .\cheermin\cheermin\models\__init__.py:102
-#: .\cheermin\cheermin\models\athlete.py:35
+#: .\cheermin\cheermin\models\athlete.py:38
 msgid "First name"
 msgstr "Prénom"
 
 #: .\cheermin\cheermin\models\__init__.py:103
-#: .\cheermin\cheermin\models\athlete.py:36
+#: .\cheermin\cheermin\models\athlete.py:39
 msgid "Last name"
 msgstr "Nom de famille"
 
@@ -54,7 +54,7 @@ msgid "Amount"
 msgstr "Pays"
 
 #: .\cheermin\cheermin\models\__init__.py:122
-#: .\cheermin\cheermin\views\athlete_detail.html:165
+#: .\cheermin\cheermin\views\athlete_detail.html:169
 msgid "Depot"
 msgstr "Dépôt"
 
@@ -89,53 +89,53 @@ msgstr "Frais mensuel"
 msgid "Number of payments"
 msgstr "Nombre de paiements"
 
-#: .\cheermin\cheermin\models\athlete.py:32
+#: .\cheermin\cheermin\models\athlete.py:35
 msgid "Athlete"
 msgstr "Athlète"
 
-#: .\cheermin\cheermin\models\athlete.py:43
+#: .\cheermin\cheermin\models\athlete.py:46
 msgid "Street"
 msgstr "Rue"
 
-#: .\cheermin\cheermin\models\athlete.py:49
+#: .\cheermin\cheermin\models\athlete.py:52
 msgid "City"
 msgstr "Ville"
 
-#: .\cheermin\cheermin\models\athlete.py:57
+#: .\cheermin\cheermin\models\athlete.py:60
 msgid "Province"
 msgstr "Province"
 
-#: .\cheermin\cheermin\models\athlete.py:65
+#: .\cheermin\cheermin\models\athlete.py:68
 msgid "Country"
 msgstr "Pays"
 
-#: .\cheermin\cheermin\models\athlete.py:71
+#: .\cheermin\cheermin\models\athlete.py:74
 msgid "Postal code"
 msgstr "Code postal"
 
-#: .\cheermin\cheermin\models\athlete.py:75
+#: .\cheermin\cheermin\models\athlete.py:78
 msgid "Birthday"
 msgstr "Date de naissance"
 
-#: .\cheermin\cheermin\models\athlete.py:78 .\cheermin\cheermin\views.py:204
+#: .\cheermin\cheermin\models\athlete.py:81 .\cheermin\cheermin\views.py:204
 #: .\cheermin\cheermin\views\athlete_detail.html:98
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: .\cheermin\cheermin\models\athlete.py:79 .\cheermin\cheermin\views.py:208
+#: .\cheermin\cheermin\models\athlete.py:82
 #: .\cheermin\cheermin\views\athlete_detail.html:102
-msgid "Email address"
-msgstr "Adresse courriel"
+msgid "Email addresses"
+msgstr "Adresses courriels"
 
-#: .\cheermin\cheermin\models\athlete.py:85
+#: .\cheermin\cheermin\models\athlete.py:88
 msgid "Photo"
 msgstr "Photo"
 
-#: .\cheermin\cheermin\models\athlete.py:93
+#: .\cheermin\cheermin\models\athlete.py:96
 msgid "Health Insurance Card"
 msgstr ""
 
-#: .\cheermin\cheermin\models\athlete.py:108
+#: .\cheermin\cheermin\models\athlete.py:111
 msgid "Secondary ID Card"
 msgstr ""
 
@@ -158,6 +158,10 @@ msgstr "Adresse"
 #: .\cheermin\cheermin\views\athlete_detail.html:94
 msgid "Age on September 1st"
 msgstr "Âge au 1er septembre"
+
+#: .\cheermin\cheermin\views.py:208
+msgid "Email address"
+msgstr "Adresse courriel"
 
 #: .\cheermin\cheermin\views.py:258
 #, python-format
