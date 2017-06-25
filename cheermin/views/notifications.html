@@ -3,58 +3,6 @@
 
 {% block content %}
   <div class="container" style="padding-top: 20px;">
-    <form action="" method="post" onsubmit="recipients_changed($('#{{ form.sent_to_all.auto_id }}').prop('checked'));">{% csrf_token %}
-      {{ form.non_field_errors }}
-      <h4>{% trans "Recipients" %}</h4>
-
-      <div id="recipient_list" class="form-group">
-        <div class="row">
-          <div class="col-sm-4">{% trans "Teams" %}{{ form.teams }}</div>
-          <div class="col-sm-4">{% trans "Athletes" %}{{ form.athletes }}</div>
-          <div class="col-sm-4">{% trans "Coaches" %}{{ form.coaches }}</div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        {{ form.sent_to_all }}
-        {{ form.sent_to_all.label }}
-      </div>
-
-      <h4>{% trans "Additional Emails" %}</h4>
-      <div class="form-group">
-        <div class="row">
-          <div class="col-sm-12">
-            {% for error in form.additional_emails.errors %}
-              <p class="text-danger"><strong>{{ error|escape }}</strong></p>
-            {% endfor %}
-            {{ form.additional_emails }}
-          </div>
-        </div>
-      </div>
-
-      <h4>Message</h4>
-      <div class="form-group {% if form.subject.errors %}has-error{% endif %}">
-        {% for error in form.subject.errors %}
-          <p class="text-danger"><strong>{{ error|escape }}</strong></p>
-        {% endfor %}
-        {{ form.subject }}
-      </div>
-      <div class="form-group {% if form.message.errors %}has-error{% endif %}">
-        {% for error in form.message.errors %}
-          <p class="text-danger"><strong>{{ error|escape }}</strong></p>
-        {% endfor %}
-        {{ form.message }}
-      </div>
-
-      <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
-      <button type="reset" class="btn btn-default" onclick="recipients_changed(false);">{% trans "Reset" %}</button>
-    </form>
+    <iframe id="roundcube_frame" src="https://nouchet.dlinkddns.com:8443/roundcube/?_action=compose" width="100%" height="950px"></iframe>
   </div>
-
-  <script type="text/javascript">
-    function recipients_changed(checked) {
-        $("#recipient_list select").prop("disabled", checked);
-    }
-    window.onload = function() {recipients_changed($("#{{ form.sent_to_all.auto_id }}").prop("checked"))};
-  </script>
 {% endblock %}

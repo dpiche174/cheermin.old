@@ -5,3 +5,7 @@
 .table tbody>tr>td.vert-align {
     vertical-align: middle;
 }
+
+#roundcube_frame {
+    border: 0;
+}
