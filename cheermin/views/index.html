@@ -1,10 +1,40 @@
-{% extends "views/base.html" %}
+<!DOCTYPE html>
+<html lang="{{ iso_language_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-{% load staticfiles %}
+    {% load staticfiles %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "css/dashboard.css" %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static "images/apple-touch-icon.png" %}">
 
-{% block content %}
-  <div class="jumbotron text-center">
-    <img src="{% static "images/logo.png" %}" />
-    <p>Bienvenue sur Cheermin!</p>
-  </div>
-{% endblock %}
+    <title>Cheermin: Spirit Cheer 07</title>
+  </head>
+  <body>
+    <div id="main">
+      <script>
+        {% include "build/index.js" %}
+        var node = document.getElementById('main');
+        var user = {
+            first_name: "{{ request.user.first_name }}",
+            last_name: "{{ request.user.last_name }}",
+            email: "{{ request.user.email }}",
+            role: "user"
+        };
+        var app = Elm.Main.embed(node, {csrf_token: "{{ csrf_token }}", user: user});
+      </script>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+  </body>
+</html>
+
+
+
+
+
